@@ -208,6 +208,24 @@ spectrogram INPUT                           Generate spectrogram image
 | facebook | 1280x720 | 16:9 or 1:1 |
 | telegram | 1280x720 | Streaming-optimised |
 
+## Optional Hermes Tweet Companion
+
+For X/Twitter-ready edits, this repo includes an optional Hermes Tweet companion
+skill. It helps Hermes collect platform context, check trends, prepare copy, and
+run approved follow-up actions through Xquik while the video editing skill keeps
+media processing local:
+
+```bash
+hermes plugins install Xquik-dev/hermes-tweet --enable
+mkdir -p ~/.hermes/skills/hermes-tweet
+rsync -a companions/hermes-tweet/ ~/.hermes/skills/hermes-tweet/
+hermes tools list
+```
+
+Keep credentials in the Hermes runtime environment. Use `tweet_action` only
+after explicit approval and keep writes gated by
+`HERMES_TWEET_ENABLE_ACTIONS=true`.
+
 ## Architecture
 
 ```
