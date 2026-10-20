@@ -3,7 +3,21 @@
 set -euo pipefail
 
 CORE_DEPS="moviepy ffmpeg-python opencv-python-headless Pillow numpy"
-AI_DEPS="openai-whisper scenedetect[opencv] torch torchaudio backgroundremover rembg"
+# scenedetect >= 0.7 depends on the GUI opencv-python, which would install a
+# second cv2 over opencv-python-headless; scenedetect-headless avoids that.
+AI_DEPS="openai-whisper scenedetect-headless torch torchaudio backgroundremover rembg"
+
+# pip package name -> module to import when checking whether it is installed
+module_for() {
+    case "$1" in
+        opencv-python-headless) echo cv2 ;;
+        Pillow) echo PIL ;;
+        ffmpeg-python) echo ffmpeg ;;
+        openai-whisper) echo whisper ;;
+        scenedetect-headless) echo scenedetect ;;
+        *) echo "$1" | sed 's/\[.*//;s/-/_/g' ;;
+    esac
+}
 
 check_only=false
 core_only=false
@@ -42,8 +56,8 @@ fi
 echo ""
 echo "--- Core Dependencies ---"
 for pkg in $CORE_DEPS; do
-    mod=$(echo "$pkg" | sed 's/\[.*//;s/-/_/g' | awk -F'=' '{print $1}')
-    if python3 -c "import ${mod%%-*}" 2>/dev/null; then
+    mod=$(module_for "$pkg")
+    if python3 -c "import $mod" 2>/dev/null; then
         echo "[OK] $pkg"
     else
         if [ "$check_only" = true ]; then
@@ -59,8 +73,8 @@ if [ "$core_only" = false ]; then
     echo ""
     echo "--- AI Dependencies (Optional) ---"
     for pkg in $AI_DEPS; do
-        mod=$(echo "$pkg" | sed 's/\[.*//;s/-/_/g' | awk -F'=' '{print $1}')
-        if python3 -c "import ${mod%%-*}" 2>/dev/null; then
+        mod=$(module_for "$pkg")
+        if python3 -c "import $mod" 2>/dev/null; then
             echo "[OK] $pkg"
         else
             if [ "$check_only" = true ]; then

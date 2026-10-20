@@ -5,4 +5,4 @@
 #   moviepy ffmpeg-python opencv-python-headless Pillow numpy
 #
 # Optional AI:
-#   openai-whisper scenedetect[opencv] torch torchaudio backgroundremover rembg
+#   openai-whisper scenedetect-headless torch torchaudio backgroundremover rembg

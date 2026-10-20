@@ -81,7 +81,7 @@ pip install moviepy ffmpeg-python opencv-python-headless Pillow numpy
 
 # Optional AI tools
 pip install openai-whisper          # Transcription
-pip install scenedetect[opencv]     # Scene detection
+pip install scenedetect-headless    # Scene detection
 pip install torch                   # Silero VAD
 pip install backgroundremover       # Background removal
 ```

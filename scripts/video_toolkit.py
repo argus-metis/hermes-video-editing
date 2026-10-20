@@ -599,7 +599,7 @@ def cmd_scenes_detect(args):
         from scenedetect import detect, AdaptiveDetector, ContentDetector
         from scenedetect import split_video_ffmpeg
     except ImportError:
-        print("Error: scenedetect not installed. Run: pip install scenedetect[opencv]", file=sys.stderr)
+        print("Error: scenedetect not installed. Run: pip install scenedetect-headless", file=sys.stderr)
         return 1
 
     inp = Path(args.input)
