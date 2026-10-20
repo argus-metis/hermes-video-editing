@@ -606,7 +606,13 @@ def cmd_scenes_detect(args):
     threshold = float(args.threshold) if args.threshold else 27.0
 
     print(f"Detecting scenes in {inp}...", file=sys.stderr)
-    scene_list = detect(str(inp), AdaptiveDetector(threshold=threshold))
+    # scenedetect 0.7 renamed AdaptiveDetector's `threshold` to `adaptive_threshold`.
+    # Accept both so this works across versions (0.6 and earlier vs 0.7+).
+    try:
+        detector = AdaptiveDetector(adaptive_threshold=threshold)
+    except TypeError:
+        detector = AdaptiveDetector(threshold=threshold)
+    scene_list = detect(str(inp), detector)
 
     if not scene_list:
         print("No scene changes detected.")
